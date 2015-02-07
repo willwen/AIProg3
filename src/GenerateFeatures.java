@@ -13,9 +13,8 @@ public class GenerateFeatures{
     	
     	Integer[][] board = new Integer[boardWidth][boardHeight];
     	Integer winner = 0;
-    	Integer next = 0;
     	
-    	int amountOfBoards = 10;
+    	int amountOfBoards = 1000;
     	int currentBoards = 0;
     	
         Scanner dataFile = new Scanner(new File("trainDataSet.txt"));
