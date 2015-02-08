@@ -1,23 +1,40 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Arrays;
+import java.io.FileWriter;
 
 public class GenerateFeatures{
 	
 	static int boardWidth = 7;
 	static int boardHeight = 6;
 		
-    public static void main (String[] args) throws FileNotFoundException{
+    public static void main (String[] args) throws IOException{
     	
     	Integer[][] board = new Integer[boardWidth][boardHeight];
     	Integer winner = 0;
+    	FileWriter writer = new FileWriter("output.csv");
+    	
+    	
+		writer.append("f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12,f13,f14,f15,f16,f17,f18,f19,f20,f21,f22,f23,f24,f25,f26,f27,f28,f29,f30,f31,f32,f33,f34,f35,f36,f37,f38,f39,f40,f41,f42");
+		writer.append(',');
+		writer.append("Most3rdRow");
+		writer.append(',');
+		writer.append("MostMiddleColumns");
+		writer.append(',');
+		
+		writer.append("Winner");
+		writer.append(',');
+		writer.append('\n');
+	
     	
     	int amountOfBoards = 1000;
     	int currentBoards = 0;
     	
         Scanner dataFile = new Scanner(new File("trainDataSet.txt"));
+    	//Scanner dataFile = new Scanner(new File(args[0]));
 
         ArrayList<Integer> dataset = new ArrayList<Integer>();
 
@@ -41,10 +58,15 @@ public class GenerateFeatures{
         
         boardloop:
         for (Integer i : dataset){
+        	
         	switch (currentColumn){
         		case 0:
         			if(count < 6){
                 		board[currentColumn][count] = i;
+                		              		
+						writer.append(board[currentColumn][count].toString());
+						writer.append(',');
+            			
                 		count++;
                 		break;
                 	} else {
@@ -54,6 +76,10 @@ public class GenerateFeatures{
         		case 1:
         			if(count < 6){
                 		board[currentColumn][count] = i;
+                		
+                		writer.append(board[currentColumn][count].toString());
+						writer.append(',');
+                		
                 		count++;
                 		break;
                 	} else {
@@ -63,6 +89,10 @@ public class GenerateFeatures{
         		case 2:
         			if(count < 6){
                 		board[currentColumn][count] = i;
+                		
+                		writer.write(i.toString());
+						writer.append(',');
+                		
                 		count++;
                 		break;
                 	} else {
@@ -72,6 +102,10 @@ public class GenerateFeatures{
         		case 3:
         			if(count < 6){
                 		board[currentColumn][count] = i;
+                		
+                		writer.write(i.toString());
+						writer.append(',');
+                		
                 		count++;
                 		break;
                 	} else {
@@ -81,6 +115,10 @@ public class GenerateFeatures{
         		case 4:
         			if(count < 6){
                 		board[currentColumn][count] = i;
+                		
+                		writer.write(i.toString());
+						writer.append(',');
+                		
                 		count++;
                 		break;
                 	} else {
@@ -90,6 +128,10 @@ public class GenerateFeatures{
         		case 5:
         			if(count < 6){
                 		board[currentColumn][count] = i;
+                		
+                		writer.write(i.toString());
+						writer.append(',');
+                		
                 		count++;
                 		break;
                 	} else {
@@ -99,6 +141,10 @@ public class GenerateFeatures{
         		case 6:
         			if(count < 6){
                 		board[currentColumn][count] = i;
+                		
+                		writer.write(i.toString());
+						writer.append(',');
+                		
                 		count++;
                 		break;
                 	} else {
@@ -117,41 +163,35 @@ public class GenerateFeatures{
         	        	System.out.println(Arrays.toString(piece));
         	        }
         	        
-        	        System.out.println("Player with most pieces in 3rd row: " + mostPiecesIn3rdRow(board));
-        	        System.out.println("Player with most pieces in the middle (+/- 1) row(s): " + mostPiecesInMiddle(board));
+        	        Integer most3rdRow = mostPiecesIn3rdRow(board);
+        	        Integer mostMiddleColumn = mostPiecesInMiddle(board);
+        	        
+        	        System.out.println("Player with most pieces in 3rd row: " + most3rdRow);
+        	        
+					writer.write(most3rdRow.toString());
+					writer.append(',');
+        	        
+        	        System.out.println("Player with most pieces in the middle (+/- 1) row(s): " + mostMiddleColumn);
+        	        
+        	        writer.write(mostMiddleColumn.toString());
+					writer.append(',');
         	        
         	        System.out.println("Winner: " + winner);
+        	        
+        	        writer.write(winner.toString());
+					writer.append(',');
+					writer.append('\n');
         	        
         	        currentBoards++;
         	        if(currentBoards >= amountOfBoards){
         	        	break boardloop;
         	        }
-        	}	
+        	}
+        	        	
         }
         
-        /*
-        System.out.println();
-        
-        for (Integer[] i : board){
-        	System.out.println(Arrays.toString(i));
-        }
-        
-        System.out.println("Winner: " + winner);
-        */
-        
-        /*
-        System.out.println();
-        
-        rotate(board);
-        rotate(board);
-        rotate(board);
-        
-        for (Integer[] i : board){
-        	System.out.println(Arrays.toString(i));
-        }
-        */
-        
-        //System.out.println(Arrays.deepToString(board));
+        writer.flush();
+        	writer.close();
     }
     
     // Returns an Integer for the player with the most tokens in the middle row {1,2}, if tie between 1 & 2, return 0
@@ -225,16 +265,6 @@ public class GenerateFeatures{
     	}
     	
     	return most;
-    }
-    
-    private static int[][] rotate( final Integer[][] array ) {
-        final int[][] res = new int[array[0].length][array.length];
-        for (int x = 0; x < array.length; x++) {
-            for (int y = 0; y < array[0].length; y++) {
-                res[(res.length-1)-y][x] = array[x][y];
-            }
-        }
-        return res;
     }
     
 }
