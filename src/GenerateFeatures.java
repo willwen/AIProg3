@@ -117,6 +117,9 @@ public class GenerateFeatures{
         	        	System.out.println(Arrays.toString(piece));
         	        }
         	        
+        	        System.out.println("Player with most pieces in 3rd row: " + mostPiecesIn3rdRow(board));
+        	        System.out.println("Player with most pieces in the middle (+/- 1) row(s): " + mostPiecesInMiddle(board));
+        	        
         	        System.out.println("Winner: " + winner);
         	        
         	        currentBoards++;
@@ -149,6 +152,79 @@ public class GenerateFeatures{
         */
         
         //System.out.println(Arrays.deepToString(board));
+    }
+    
+    // Returns an Integer for the player with the most tokens in the middle row {1,2}, if tie between 1 & 2, return 0
+    private static Integer mostPiecesIn3rdRow(Integer[][] board){
+    	Integer most = 0;
+    	
+    	int count1 = 0;
+    	int count2 = 0;
+    	
+    	for(int i = 0; i < 7; i++){
+    		if(board[i][2] == 1){
+    			count1++;
+    		} else if(board[i][2] == 2){
+    			count2++;
+    		}
+    	}
+    	
+    	if(count1 > count2){
+    		most = 1;
+    	} else if(count1 < count2){
+    		most = 2;
+    	} else {
+    		most = 0;
+    	}
+    	
+    	return most;
+    }
+    
+ // Returns an Integer for the player with the most tokens in the 1 {or 3 if tied} middle columns of the board
+    private static Integer mostPiecesInMiddle(Integer[][] board){
+    	Integer most = 0;
+    	
+    	int count1 = 0;
+    	int count2 = 0;
+    	
+    	for(int i = 0; i < 6; i++){
+    		if(board[3][i] == 1){
+    			count1++;
+    		} else if(board[3][i] == 2){
+    			count2++;
+    		}
+    	}
+    	
+    	if(count1 > count2){
+    		most = 1;
+    	} else if(count1 < count2){
+    		most = 2;
+    	} else {
+    		for(int i = 0; i < 6; i++){
+        		if(board[2][i] == 1){
+        			count1++;
+        		} else if(board[2][i] == 2){
+        			count2++;
+        		}
+        	}
+    		for(int i = 0; i < 6; i++){
+        		if(board[4][i] == 1){
+        			count1++;
+        		} else if(board[4][i] == 2){
+        			count2++;
+        		}
+        	}
+    	}
+    	
+    	if(count1 > count2){
+    		most = 1;
+    	} else if(count1 < count2){
+    		most = 2;
+    	} else {
+    		most = 0;
+    	}
+    	
+    	return most;
     }
     
     private static int[][] rotate( final Integer[][] array ) {
