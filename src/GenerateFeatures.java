@@ -1,5 +1,4 @@
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -30,6 +29,8 @@ public class GenerateFeatures {
 		writer.append("FirstMove");
 		writer.append(',');
 		writer.append("HighestAdjacency");
+		writer.append(',');
+		writer.append("UsedMostColumns");
 		writer.append(',');
 		writer.append("Winner");
 		writer.append('\n');
@@ -171,6 +172,7 @@ public class GenerateFeatures {
 				Integer countTopMost = countTopMost(board);
 				Integer firstPlayer = firstMove();
 				Integer higherAdjacency = adjacentMoreThanThree(board);
+				Integer usedMostColumns = usedMostColumns(board);
 
 				System.out.println("Player with most pieces in 3rd row: "
 						+ most3rdRow);
@@ -178,16 +180,12 @@ public class GenerateFeatures {
 				writer.write(most3rdRow.toString());
 				writer.append(',');
 
-				System.out
-						.println("Player with most pieces in the middle (+/- 1) row(s): "
-								+ mostMiddleColumn);
+				System.out.println("Player with most pieces in the middle (+/- 1) row(s): " + mostMiddleColumn);
 
 				writer.write(mostMiddleColumn.toString());
 				writer.append(',');
 
-				System.out
-						.println("Player with most pieces on top in all the columns: "
-								+ countTopMost);
+				System.out.println("Player with most pieces on top in all the columns: " + countTopMost);
 
 				writer.write(countTopMost.toString());
 				writer.append(',');
@@ -200,6 +198,11 @@ public class GenerateFeatures {
 				System.out.println("Player who has higher adjacency: " + higherAdjacency);
 
 				writer.write(higherAdjacency.toString());
+				writer.append(',');
+				
+				System.out.println("Player who used the most columns: " + usedMostColumns);
+				
+				writer.write(usedMostColumns.toString());
 				writer.append(',');
 				
 				System.out.println("Winner: " + winner);
@@ -519,6 +522,45 @@ public class GenerateFeatures {
 
 			}
 		}
+	}
+	
+	private static Integer usedMostColumns(Integer board[][]){
+		Integer most = 0;
+
+		int count1 = 0;
+		int count2 = 0;
+		
+		int tally1 = 0;
+		int tally2 = 0;
+
+		for (int i = 0; i < 7; i++) {
+			for (int j = 0; j < 6; j++) {
+				if (board[i][j] == 1) {
+					count1++;
+				} else if (board[i][j] == 2) {
+					count2++;
+				}
+			}
+			
+			if (count1 > count2){
+				tally1++;
+			} else if (count1 < count2){
+				tally2++;
+			}
+			
+			count1 = 0;
+			count2 = 0;
+		}
+
+		if (tally1 > tally2) {
+			most = 1;
+		} else if (tally1 < tally2) {
+			most = 2;
+		} else {
+			most = 0;
+		}
+
+		return most;
 	}
 
 }
